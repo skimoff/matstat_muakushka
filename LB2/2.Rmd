@@ -1,5 +1,8 @@
 ---
-title: "2"
-output: html_document
+title: "Лабораторная работа 2"
+output:
+  html_document:
+    self_contained: true
+    toc: true
 ---
-
+$f(x)=sqrt(sd,)$
