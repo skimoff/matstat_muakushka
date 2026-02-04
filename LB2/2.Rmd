@@ -5,4 +5,7 @@ output:
     self_contained: true
     toc: true
 ---
-$f(x)=sqrt(sd,)$
+
+3. Для набору формул використовуємо LaTeX згідно з правилами [його синтаксису](https://uk.wikipedia.org/wiki/LaTeX). Формула у RMarkdown-документі має бути взята у символи `$`:
+
+$y(x)=b_0x+b_1+b_2x^2$
