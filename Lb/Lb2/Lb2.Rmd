@@ -1,0 +1,117 @@
+---
+title: Математична статистика. Лабораторна робота № 2. Створення електронного документу
+  в стилі 'грамотного програмування' засобами R
+author: "Студент Мякушка Олександр, `r format(Sys.time(), '%Y')`"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    df_print: paged
+  html_notebook:
+    toc: true
+    toc_float: true
+    highlight: tango
+fontsize: 12pt
+header-includes:
+- \usepackage[T2A]{fontenc}
+- \usepackage[utf8]{inputenc}
+- \usepackage[russian]{babel}
+editor_options:
+  chunk_output_type: console
+bibliography: references_lab.bib
+---
+```{r setup, include=FALSE}
+# Підключення пакетів, згаданих у методичці 
+library(rio)
+library(ggplot2)
+library(dplyr)
+library(DT) # Для красивих таблиць
+library(knitr)
+```
+# 1. Постановка завдання
+
+Побудувати графік функції $y(x) = b_0 + b_1 x + b_2 x^2$ для діапазону $x \in [x_1; x_2]$ .
+Також виконати завдання з використанням пакету `ggplot2`.
+
+# 2. Виконання завдання (Базова графіка)
+
+Згідно з пунктом 4 методичних вказівок, задаємо параметри та будуємо графік.
+
+Формула функції: $y(x) = b_0 + b_1 x + b_2 x^2$.
+
+```{r base_plot}
+# Задаємо параметри функції 
+b0 <- 2
+b1 <- 3
+b2 <- 1.57
+
+# Задаємо область визначення 
+x <- seq(-1, 1, 0.1)
+
+# Обчислення функції 
+y <- b0 + b1 * x + b2 * x^2
+
+# Побудова графіку (plot) 
+plot(x, y,
+     type = "l",
+     col = "red",
+     main = "Графік функції",
+     xlab = "x",
+     ylab = "y")
+
+# Додавання точок (points) 
+points(x, y, col = "blue")
+```
+
+# 3. Експорт та імпорт даних
+
+Згідно з пунктом 5, використовуємо пакет `rio` для експорту даних.
+
+```{r export_import}
+# Створюємо таблицю даних 
+df <- data.frame(x, y)
+
+# Перевірка папки data
+if(!dir.exists("data")) dir.create("data")
+
+# Експорт даних на диск 
+export(df, "data/data.csv")
+
+# Імпорт даних з файлу (Пункт 6) 
+dfNew <- import("data/data.csv")
+
+# Візуалізація таблиці засобами knitr 
+knitr::kable(head(dfNew), caption = "Табл. 1. Фрагмент таблиці даних")
+```
+
+# 4. Самостійна робота (ggplot2 та пайпи)
+
+Виконуємо пункти 3 та 4 "Порядку виконання роботи" : оптимізація коду за допомогою оператора `%>%` та побудова графіка засобами `ggplot2`.
+
+```{r ggplot_graph}
+# Використання пайпів (%>%) та побудова графіку ggplot2
+dfNew %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_line(color = "red", linewidth = 1) +
+  geom_point(color = "blue", size = 2) +
+  labs(
+    title = "Графік функції (ggplot2)",
+    subtitle = expression(y(x) == b[0] + b[1]*x + b[2]*x^2),
+    x = "x",
+    y = "y"
+  ) +
+  theme_minimal()
+```
+
+# 5. Результати (Висновки)
+
+Сформуємо результуючу таблицю параметрів, як показано у пункті 7 .
+
+| Параметр | Значення |
+|:--------:|:--------:|
+| $b_0$    | `r b0`   |
+| $b_1$    | `r b1`   |
+| $b_2$    | `r b2`   |
+| $x_1$    | -1       |
+| $x_2$    | 1        |
+
